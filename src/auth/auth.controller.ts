@@ -41,8 +41,10 @@ export class AuthController {
   async login(@Body() loginDto: LoginDto) {
     try {
       const user = await this.authService.login(loginDto);
+      
       return {
         message: 'User logged in successfully',
+        user
       };
     } catch (error) {
       if (error instanceof HttpException) {

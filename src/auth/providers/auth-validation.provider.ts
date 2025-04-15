@@ -12,7 +12,7 @@ export class AuthValidation {
     private readonly userModel: Model<IUser>,
   ) {}
 
-  async validateLogin(loginDto: LoginDto) {
+  async validateLogin(loginDto: LoginDto){
     const user = await this.userModel.findOne({ email: loginDto.email });
 
     const isPasswordValid = user
@@ -25,5 +25,7 @@ export class AuthValidation {
         HttpStatus.UNAUTHORIZED,
       );
     }
+
+    return user;
   }
 }
