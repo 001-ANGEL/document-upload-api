@@ -8,8 +8,8 @@ import {
 } from 'class-validator';
 
 export class UserDto {
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   @MinLength(3)
   @MaxLength(50)
   fullName: string;
@@ -22,10 +22,10 @@ export class UserDto {
   @IsStrongPassword(
     {
       minLength: 8,
-      minNumbers: 1,
+      minNumbers: 0,
       minSymbols: 0,
-      minUppercase: 1,
-      minLowercase: 1,
+      minUppercase: 0,
+      minLowercase: 0,
     },
     {
       message:
