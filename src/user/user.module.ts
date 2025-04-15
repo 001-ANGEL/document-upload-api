@@ -8,6 +8,6 @@ import { UserValidation } from './providers/userValidation.provider';
   imports: [MongooseModule.forFeature([{ name: 'User', schema: UserSchema }])],
   controllers: [],
   providers: [UserService, UserValidation],
-  exports: [UserService],
+  exports: [UserService, MongooseModule.forFeature([{ name: 'User', schema: UserSchema }])],
 })
 export class UserModule {}
