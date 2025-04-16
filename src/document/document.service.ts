@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { DocumentDto } from './dto/document.dto';
-import { Request } from 'express';
 import { AuthValidation } from 'src/auth/providers/auth-validation.provider';
-import { UserId } from 'src/user/interface/user.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { IDocument } from './interface/document.interface';
@@ -18,13 +19,8 @@ export class DocumentService {
 
   async uploadDocument(
     documentDto: DocumentDto,
-    req: Request,
+    userId: string,
   ): Promise<IDocument> {
-    const token = await this.authValidation.extractTokenFromHeader(req);
-    const decoded = await this.authValidation.validateToken(token);
-
-    const userId = (decoded as UserId).userId;
-
     const data = {
       userId: userId,
       ...documentDto,
@@ -34,11 +30,27 @@ export class DocumentService {
     return saveDocument;
   }
 
-  async getDocuments(): Promise<any> {
-    return { message: 'Documents retrieved successfully' };
+  async getDocuments(userId: string): Promise<IDocument[]> {
+    const documents = await this.fileModel
+      .find({ userId: userId, isDeleted: false })
+      .exec();
+    return documents;
   }
 
-  async deleteDocument(documentId: string): Promise<any> {
-    return { message: 'Document deleted successfully' };
+  async deleteDocument(documentId: string, userId: string): Promise<IDocument> {
+    const document = await this.fileModel.findOne({
+      _id: documentId,
+      userId,
+      isDeleted: false,
+    });
+
+    if (!document) {
+      throw new NotFoundException('Document not found or already deleted');
+    }
+
+    document.isDeleted = true;
+    await document.save();
+
+    return document;
   }
 }

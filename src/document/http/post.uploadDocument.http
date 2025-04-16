@@ -1,5 +1,6 @@
 POST http://localhost:3000/api/v1/documents/upload
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2ZlYjQ5ZjliZWRkNTMxY2MyNGZiZjYiLCJpYXQiOjE3NDQ4MjI2ODIsImV4cCI6MTc0NDkwOTA4Mn0.AENAKGaRwPf3Xc5e5SfpvAwgWMO-BlaBkkylultK9ok
 
 {
     "fileName": "example.txt",
