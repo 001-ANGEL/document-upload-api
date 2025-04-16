@@ -7,6 +7,7 @@ import { UserSchema } from 'src/user/schema/user.schema';
 import { AuthValidation } from './providers/auth-validation.provider';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthValidationGuard } from './guards/auth-validation.guard';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, AuthValidation],
-  exports: [AuthValidation],
+  providers: [AuthService, AuthValidation, AuthValidationGuard],
+  exports: [AuthValidation, AuthValidationGuard],
 })
 export class AuthModule {}

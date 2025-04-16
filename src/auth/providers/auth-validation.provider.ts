@@ -7,10 +7,10 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ConfigService } from '@nestjs/config';
 
 import * as jwt from 'jsonwebtoken';
+import { JwtPayload } from 'src/user/interface/jwt.interface';
 
 @Injectable()
 export class AuthValidation {
-  
   constructor(
     @InjectModel('User')
     private readonly userModel: Model<IUser>,
@@ -50,7 +50,7 @@ export class AuthValidation {
     }
 
     const secretJwt = this.configService.get<string>('jwt.secret');
-    const decoded = jwt.verify(token, secretJwt);
+    const decoded = jwt.verify(token, secretJwt) as JwtPayload;
 
     return decoded;
   }
