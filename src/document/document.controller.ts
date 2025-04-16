@@ -10,15 +10,17 @@ import {
   Patch,
   Post,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { DocumentDto } from './dto/document.dto';
 import { IDocument } from './interface/document.interface';
 import { Request } from 'express';
 import { DocumentService } from './document.service';
 import { AuthValidation } from 'src/auth/providers/auth-validation.provider';
-import { UserId } from 'src/user/interface/user.interface';
+import { AuthValidationGuard } from 'src/auth/guards/auth-validation.guard';
 
 @Controller('documents')
+@UseGuards(AuthValidationGuard)
 export class DocumentController {
   constructor(
     @Inject()
@@ -29,7 +31,7 @@ export class DocumentController {
   private async getUserIdFromRequest(req: Request): Promise<string> {
     const token = await this.authValidation.extractTokenFromHeader(req);
     const decoded = await this.authValidation.validateToken(token);
-    return (decoded as UserId).userId;
+    return decoded.userId;
   }
 
   @Post('/upload')
@@ -37,7 +39,7 @@ export class DocumentController {
   async uploadDocument(
     @Body() documentDto: DocumentDto,
     @Req() req: Request,
-  ): Promise<IDocument> {
+  ): Promise<{documents: IDocument; message: string}> {
     const userId = await this.getUserIdFromRequest(req);
 
     try {
@@ -45,7 +47,10 @@ export class DocumentController {
         documentDto,
         userId,
       );
-      return uploadFile;
+      return {
+        message: 'Documents fetched successfully',
+        documents: uploadFile,
+      };
     } catch (error) {
       if (error instanceof HttpException) {
         throw error;
