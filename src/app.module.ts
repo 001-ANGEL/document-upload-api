@@ -3,6 +3,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { environmentValidation } from './config/environment.validation';
 import { AuthModule } from './auth/auth.module';
+import { DocumentModule } from './document/document.module';
+import { DocumentController } from './document/document.controller';
 import configuration from './config/configuration';
 
 @Module({
@@ -20,8 +22,9 @@ import configuration from './config/configuration';
       inject: [ConfigService],
     }),
     AuthModule,
+    DocumentModule,
   ],
-  controllers: [],
+  controllers: [DocumentController],
   providers: [],
 })
 export class AppModule {}
