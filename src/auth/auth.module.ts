@@ -21,10 +21,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
           expiresIn: '1d',
         },
       }),
-      
-    })
+    }),
   ],
   controllers: [AuthController],
   providers: [AuthService, AuthValidation],
+  exports: [AuthValidation],
 })
 export class AuthModule {}
