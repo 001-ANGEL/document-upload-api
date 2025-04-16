@@ -37,9 +37,14 @@ export class AuthValidation {
 
   async extractTokenFromHeader(req: any): Promise<string> {
     const authHeader = req.headers['authorization'];
+
+    if( !authHeader ){
+      throw new HttpException('No token provided', HttpStatus.UNAUTHORIZED);
+    }
+
     const token = authHeader && authHeader.split(' ')[1];
     if (!token) {
-      throw new HttpException('No token provided', HttpStatus.UNAUTHORIZED);
+      throw new HttpException('Invalid token format', HttpStatus.UNAUTHORIZED);
     }
     return token;
   }
