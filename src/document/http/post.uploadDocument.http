@@ -1,0 +1,9 @@
+POST http://localhost:3000/api/v1/documents/upload
+Content-Type: application/json
+
+{
+    "fileName": "example.txt",
+    "date": "2023-10-01",
+    "extension": "doc",
+    "fileContent": "SGVsbG8sIFdvcmxkIQ=="
+}
