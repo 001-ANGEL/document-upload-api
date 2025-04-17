@@ -33,7 +33,7 @@ export class DocumentService {
     limit: number,
     offset: number,
   ): Promise<IDocument[]> {
-    console.log(limit, offset);
+
     const documents = await this.fileModel
       .find({ userId: userId, isDeleted: false })
       .skip(offset)
