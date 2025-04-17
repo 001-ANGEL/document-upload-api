@@ -34,3 +34,19 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## Example: Using a Token in API Requests
+
+Use the extension called httpYac - Rest Client for http testing
+
+```
+POST http://localhost:3000/api/v1/upload
+Content-Type: application/json
+Authorization: Bearer <your-valid-token-here>
+
+{
+    "nameFile": "text1",
+    "Date": "01/01/2000"
+}
+
+```
