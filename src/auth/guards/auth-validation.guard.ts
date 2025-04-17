@@ -1,12 +1,11 @@
 import {
-  BadRequestException,
   CanActivate,
   ExecutionContext,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthValidation } from '../providers/auth-validation.provider';
-import e, { Request } from 'express';
+import { Request } from 'express';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { IUser } from 'src/user/interface/user.interface';
