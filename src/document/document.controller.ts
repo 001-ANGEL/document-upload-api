@@ -9,6 +9,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -18,6 +19,7 @@ import { Request } from 'express';
 import { DocumentService } from './document.service';
 import { AuthValidation } from 'src/auth/providers/auth-validation.provider';
 import { AuthValidationGuard } from 'src/auth/guards/auth-validation.guard';
+import { DocumentPaginationDto } from './dto/document-pagination.dto';
 
 @Controller('documents')
 @UseGuards(AuthValidationGuard)
@@ -65,11 +67,14 @@ export class DocumentController {
   @HttpCode(200)
   async getDocuments(
     @Req() req: Request,
+    @Query() paginationDto: DocumentPaginationDto
   ): Promise<{ message: string; documents: IDocument[] }> {
     const userId = await this.getUserIdFromRequest(req);
+    const limit = paginationDto.limit || 5;
+    const offset = paginationDto.offset || 0;
 
     try {
-      const documents = await this.documentService.getDocuments(userId);
+      const documents = await this.documentService.getDocuments(userId, limit, offset);
       return {
         message: 'Documents fetched successfully',
         documents,

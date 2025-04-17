@@ -1,12 +1,10 @@
-import {
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { DocumentDto } from './dto/document.dto';
 import { AuthValidation } from 'src/auth/providers/auth-validation.provider';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { IDocument } from './interface/document.interface';
+import { DocumentPaginationDto } from './dto/document-pagination.dto';
 
 @Injectable()
 export class DocumentService {
@@ -30,9 +28,16 @@ export class DocumentService {
     return saveDocument;
   }
 
-  async getDocuments(userId: string): Promise<IDocument[]> {
+  async getDocuments(
+    userId: string,
+    limit: number,
+    offset: number,
+  ): Promise<IDocument[]> {
+    console.log(limit, offset);
     const documents = await this.fileModel
       .find({ userId: userId, isDeleted: false })
+      .skip(offset)
+      .limit(limit)
       .exec();
     return documents;
   }
