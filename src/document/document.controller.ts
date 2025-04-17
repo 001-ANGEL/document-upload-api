@@ -67,7 +67,7 @@ export class DocumentController {
   @HttpCode(200)
   async getDocuments(
     @Req() req: Request,
-    @Query() paginationDto: DocumentPaginationDto
+    @Query() paginationDto: DocumentPaginationDto,
   ): Promise<{ message: string; documents: IDocument[] }> {
     const userId = await this.getUserIdFromRequest(req);
     const limit = paginationDto.limit || 5;
