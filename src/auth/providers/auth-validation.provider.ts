@@ -37,7 +37,7 @@ export class AuthValidation {
 
   async extractTokenFromHeader(req: any): Promise<string> {
     const authHeader = req.headers['authorization'];
-    
+
     const bearer = authHeader && authHeader.split(' ')[0];
     if (!authHeader || bearer !== 'Bearer') {
       throw new HttpException(
@@ -58,9 +58,12 @@ export class AuthValidation {
       throw new HttpException('No token provided', HttpStatus.UNAUTHORIZED);
     }
 
-    const secretJwt = this.configService.get<string>('jwt.secret');
-    const decoded = jwt.verify(token, secretJwt) as JwtPayload;
-
-    return decoded;
+    try {
+      const secretJwt = this.configService.get<string>('jwt.secret');
+      const decoded = jwt.verify(token, secretJwt) as JwtPayload;
+      return decoded;
+    } catch (error) {
+      throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
+    }
   }
 }
